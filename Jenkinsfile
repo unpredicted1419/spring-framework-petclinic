@@ -3,7 +3,7 @@ pipeline {
     environment {
         git_repo_url = "https://github.com/crazy4devops/spring-framework-petclinic.git"
         git_repo_br = "dev"
-        tomcat_dev = "ec2-65-0-95-227.ap-south-1.compute.amazonaws.com"
+        tomcat_dev = "	ec2-13-235-103-42.ap-south-1.compute.amazonaws.com"
         tomcat_uat = "ec2-13-233-97-79.ap-south-1.compute.amazonaws.com"
         tomcat_prd = "ec2-3-109-47-34.ap-south-1.compute.amazonaws.com"
     }
