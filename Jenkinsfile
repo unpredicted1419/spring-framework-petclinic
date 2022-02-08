@@ -3,9 +3,9 @@ pipeline {
     environment {
         git_repo_url = "https://github.com/crazy4devops/spring-framework-petclinic.git"
         git_repo_br = "dev"
-        tomcat-dev = "ec2-65-0-95-227.ap-south-1.compute.amazonaws.com"
-        tomcat-uat = "ec2-13-233-97-79.ap-south-1.compute.amazonaws.com"
-        tomcat-prd = "ec2-3-109-47-34.ap-south-1.compute.amazonaws.com"
+        tomcat_dev = "ec2-65-0-95-227.ap-south-1.compute.amazonaws.com"
+        tomcat_uat = "ec2-13-233-97-79.ap-south-1.compute.amazonaws.com"
+        tomcat_prd = "ec2-3-109-47-34.ap-south-1.compute.amazonaws.com"
     }
     stages{
         // stage("Checkout"){
@@ -80,8 +80,8 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
-                            ssh ubuntu@\${tomcat-dev}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
-                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat-dev}:/opt/tomcat/webapps/
+                            ssh ubuntu@\${tomcat_dev}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_dev}:/opt/tomcat/webapps/
                         """
                 }
             }
@@ -91,8 +91,8 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
-                            ssh ubuntu@\${tomcat-uat}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
-                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat-uat}:/opt/tomcat/webapps/
+                            ssh ubuntu@\${tomcat_uat}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_uat}:/opt/tomcat/webapps/
                         """
                 }
             }
@@ -104,8 +104,8 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
-                            ssh ubuntu@\${tomcat-prd}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
-                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat-prd}:/opt/tomcat/webapps/
+                            ssh ubuntu@\${tomcat_prd}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_prd}:/opt/tomcat/webapps/
                         """
                 }
             }
