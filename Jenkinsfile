@@ -4,7 +4,7 @@ pipeline {
         git_repo_url = "https://github.com/crazy4devops/spring-framework-petclinic.git"
         git_repo_br = "dev"
         tomcat_dev = "ec2-13-233-112-10.ap-south-1.compute.amazonaws.com"
-        tomcat_uat = "ec2-13-234-34-51.ap-south-1.compute.amazonaws.com	"
+        tomcat_uat = "ec2-13-234-34-51.ap-south-1.compute.amazonaws.com"
         tomcat_prd = "ec2-3-109-139-179.ap-south-1.compute.amazonaws.com"
     }
     stages{  
@@ -69,7 +69,7 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """ 
-                            scp  -r -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_uat}:/opt/tomcat/webapps
+                           scp  -r -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_uat}:/opt/tomcat/webapps
                         """
                 }
             }
@@ -81,7 +81,7 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
-                            scp -r -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_prd}:/opt/tomcat/webapps
+                            scp  -r -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_prd}:/opt/tomcat/webapps
                         """
                 }
             }
