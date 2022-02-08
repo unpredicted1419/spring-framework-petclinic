@@ -66,7 +66,7 @@ pipeline {
         //         """
         //     }
         // }
-        stage("deploy-dev"){
+        stage("deploy-aws-dev"){
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
@@ -75,16 +75,28 @@ pipeline {
                 }
             }
         }
-
-        stage("Deploy - UAT"){
+        stage("deploy-aws-uat"){
             steps{
-                echo "Running Deployment on UAT"
+                sshagent(['aws-ec2-creds']) {
+                        sh """
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@ec2-13-233-97-79.ap-south-1.compute.amazonaws.com:/opt/tomcat/webapps/
+                        """
+                }
             }
         }
-        stage("Deploy - PRD"){
+        stage("deploy-aws-prd"){
             steps{
-                echo "Running Deployment on PRD"
+                sshagent(['aws-ec2-creds']) {
+                        sh """
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@ec2-3-109-47-34.ap-south-1.compute.amazonaws.com:/opt/tomcat/webapps/
+                        """
+                }
             }
+        }
+    }
+    post { 
+        always { 
+            cleanWs()
         }
     }
 }
