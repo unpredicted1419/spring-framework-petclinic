@@ -7,18 +7,10 @@ pipeline {
         tomcat_uat = "ec2-13-233-97-79.ap-south-1.compute.amazonaws.com"
         tomcat_prd = "ec2-3-109-47-34.ap-south-1.compute.amazonaws.com"
     }
-    stages{
-        // stage("Checkout"){
-        //     steps {
-        //         // Clean before build
-        //         cleanWs()
-        //         git url: "${git_repo_url}", branch: "${git_repo_br}"
-        //         echo 'Pulling...' + env.BRANCH_NAME
-        //     }
-        // }
+    stages{  
         stage("Build Source Code"){
             steps {
-                    //sh "./mvnw package"
+                   
                     sh "./mvnw package"
                     sh "mv target/petclinic*.war target/petclinicApp-${BUILD_NUMBER}.war"
             }
@@ -61,14 +53,6 @@ pipeline {
                     
             }
         }            
-        // stage("Deploy - DEV"){
-        //     steps{
-        //         echo "Running Deployment on Dev"
-        //         sh """
-        //           sshpass -p 'Venkat@123' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no target/*.war cloud_user@172.31.46.115:/opt/tomcat/webapps
-        //         """
-        //     }
-        // }
         stage("RenameArtifacts"){
             steps {
                 sh """
@@ -86,7 +70,7 @@ pipeline {
                 }
             }
         }
-        //  ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl restart tomcat
+        
          stage("deploy-aws-uat"){
 
             steps{
@@ -118,3 +102,20 @@ pipeline {
         }
     }
 }
+//  ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl restart tomcat
+// stage("Checkout"){
+        //     steps {
+        //         // Clean before build
+        //         cleanWs()
+        //         git url: "${git_repo_url}", branch: "${git_repo_br}"
+        //         echo 'Pulling...' + env.BRANCH_NAME
+        //     }
+        // }
+ // stage("Deploy - DEV"){
+        //     steps{
+        //         echo "Running Deployment on Dev"
+        //         sh """
+        //           sshpass -p 'Venkat@123' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no target/*.war cloud_user@172.31.46.115:/opt/tomcat/webapps
+        //         """
+        //     }
+        // }
