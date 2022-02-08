@@ -79,7 +79,7 @@ pipeline {
                         sh """
                             ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
                             scp -o StrictHostKeyChecking=no target/*.war   ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com:/opt/tomcat/webapps/
-                            ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl start tomcat
+                            ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl restart tomcat
                         """
                 }
             }
