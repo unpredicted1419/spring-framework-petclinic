@@ -58,14 +58,24 @@ pipeline {
                     
             }
         }            
-        stage("Deploy - DEV"){
+        // stage("Deploy - DEV"){
+        //     steps{
+        //         echo "Running Deployment on Dev"
+        //         sh """
+        //           sshpass -p 'Venkat@123' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no target/*.war cloud_user@172.31.46.115:/opt/tomcat/webapps
+        //         """
+        //     }
+        // }
+        stage("deploy-dev"){
             steps{
-                echo "Running Deployment on Dev"
-                sh """
-                  sshpass -p 'Venkat@123' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no target/*.war cloud_user@172.31.46.115:/opt/tomcat/webapps
-                """
+                sshagent(['aws-ec2-creds']) {
+                        sh """
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com:/opt/tomcat/webapps/
+                        """
+                }
             }
-        }  
+        }
+
         stage("Deploy - UAT"){
             steps{
                 echo "Running Deployment on UAT"
