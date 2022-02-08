@@ -87,7 +87,10 @@ pipeline {
             }
         }
     }
-    post { 
+    post {
+        aborted{
+            slackSend channel: '#jenkins-batch-ii', message: '"*ABORTED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \\n More info at: ${env.BUILD_URL}"', tokenCredentialId: 'slack-notify'
+        }
         always { 
             cleanWs()
         }
