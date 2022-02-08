@@ -15,12 +15,7 @@ pipeline {
                     sh "mv target/petclinic*.war target/petclinicApp-${BUILD_NUMBER}.war"
             }
         }
-        // stage("Run Unit-Tests"){
-        //     steps {
-        //             sh "./mvnw test"
-        //     }
-        // }
-        stage('Sonarqube Analysis') {
+        stage('Code Analysis') {
             environment {
               def scannerHome = tool 'SonarQubeScanner'
             }
@@ -101,6 +96,12 @@ pipeline {
         }
     }
 }
+
+// stage("Run Unit-Tests"){
+        //     steps {
+        //             sh "./mvnw test"
+        //     }
+        // }
 //  ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl restart tomcat
 // stage("Checkout"){
         //     steps {
