@@ -59,8 +59,8 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
-                            ssh  -tt -o StrictHostKeyChecking=no ubuntu@\${tomcat_dev}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
-                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_dev}:/opt/tomcat/webapps/
+                            ssh  -tt -o StrictHostKeyChecking=no ubuntu@\${tomcat_dev}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*; exit
+                            scp  -r -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_dev}:/opt/tomcat/webapps/
                         """
                 }
             }
@@ -70,8 +70,8 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
-                            ssh -tt -o StrictHostKeyChecking=no ubuntu@\${tomcat_uat}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
-                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_uat}:/opt/tomcat/webapps/
+                            ssh -tt -o StrictHostKeyChecking=no ubuntu@\${tomcat_uat}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*;exit
+                            scp  -r -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_uat}:/opt/tomcat/webapps/
                         """
                 }
             }
@@ -83,8 +83,8 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
-                            ssh -tt -o StrictHostKeyChecking=no ubuntu@\${tomcat_prd}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
-                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_prd}:/opt/tomcat/webapps/
+                            ssh -tt -o StrictHostKeyChecking=no ubuntu@\${tomcat_prd}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*;exit
+                            scp -r -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat_prd}:/opt/tomcat/webapps/
                         """
                 }
             }
