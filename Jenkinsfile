@@ -3,6 +3,9 @@ pipeline {
     environment {
         git_repo_url = "https://github.com/crazy4devops/spring-framework-petclinic.git"
         git_repo_br = "dev"
+        tomcat-dev = "ec2-65-0-95-227.ap-south-1.compute.amazonaws.com"
+        tomcat-uat = "ec2-13-233-97-79.ap-south-1.compute.amazonaws.com"
+        tomcat-prd = "ec2-3-109-47-34.ap-south-1.compute.amazonaws.com"
     }
     stages{
         // stage("Checkout"){
@@ -77,31 +80,36 @@ pipeline {
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
-                            ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
-                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com:/opt/tomcat/webapps/
+                            ssh ubuntu@\${tomcat-dev}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat-dev}:/opt/tomcat/webapps/
                         """
                 }
             }
         }
         //  ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl restart tomcat
-        // stage("deploy-aws-uat"){
-        //     steps{
-        //         sshagent(['aws-ec2-creds']) {
-        //                 sh """
-        //                     scp -o StrictHostKeyChecking=no target/*.war   ubuntu@ec2-13-233-97-79.ap-south-1.compute.amazonaws.com:/opt/tomcat/webapps/
-        //                 """
-        //         }
-        //     }
-        // }
-        // stage("deploy-aws-prd"){
-        //     steps{
-        //         sshagent(['aws-ec2-creds']) {
-        //                 sh """
-        //                     scp -o StrictHostKeyChecking=no target/*.war   ubuntu@ec2-3-109-47-34.ap-south-1.compute.amazonaws.com:/opt/tomcat/webapps/
-        //                 """
-        //         }
-        //     }
-        // }
+         stage("deploy-aws-uat"){
+            steps{
+                sshagent(['aws-ec2-creds']) {
+                        sh """
+                            ssh ubuntu@\${tomcat-uat}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat-uat}:/opt/tomcat/webapps/
+                        """
+                }
+            }
+        }
+         stage("deploy-aws-prd"){
+            input{
+                    message "Do you want to proceed for production deployment?"
+            }
+            steps{
+                sshagent(['aws-ec2-creds']) {
+                        sh """
+                            ssh ubuntu@\${tomcat-prd}; sudo systemctl stop tomcat; sudo rm -rf /opt/tomcat/webapps/petclinic*
+                            scp -o StrictHostKeyChecking=no target/*.war   ubuntu@\${tomcat-prd}:/opt/tomcat/webapps/
+                        """
+                }
+            }
+        }
     }
     post { 
         always { 
