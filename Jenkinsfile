@@ -66,13 +66,19 @@ pipeline {
         //         """
         //     }
         // }
+        stage(""){
+            steps {
+                sh """
+                     mv target/*.war target/petclinicApp.war
+                """
+            }
+        }
         stage("deploy-aws-dev"){
             steps{
                 sshagent(['aws-ec2-creds']) {
                         sh """
                             ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl stop tomcat
                             scp -o StrictHostKeyChecking=no target/*.war   ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com:/opt/tomcat/webapps/
-                            ssh -o StrictHostKeyChecking=no ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; mv /opt/tomcat/webapps/*.war /opt/tomcat/webapps/petclinicApp.war
                             ssh ubuntu@ec2-65-0-95-227.ap-south-1.compute.amazonaws.com; sudo systemctl start tomcat
                         """
                 }
