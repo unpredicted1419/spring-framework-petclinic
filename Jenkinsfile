@@ -3,9 +3,9 @@ pipeline {
     environment {
         git_repo_url = "https://github.com/crazy4devops/spring-framework-petclinic.git"
         git_repo_br = "dev"
-        tomcat_dev = "ec2-13-233-112-10.ap-south-1.compute.amazonaws.com"
-        tomcat_uat = "ec2-13-234-34-51.ap-south-1.compute.amazonaws.com"
-        tomcat_prd = "ec2-3-109-139-179.ap-south-1.compute.amazonaws.com"
+        tomcat_dev = "ec2-65-1-109-103.ap-south-1.compute.amazonaws.com"
+        tomcat_uat = "ec2-35-154-189-118.ap-south-1.compute.amazonaws.com"
+        tomcat_prd = "ec2-13-234-48-85.ap-south-1.compute.amazonaws.com"
     }
     stages{  
         stage("Build Source Code"){
