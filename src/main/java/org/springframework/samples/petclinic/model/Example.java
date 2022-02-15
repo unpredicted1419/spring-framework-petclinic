@@ -1,4 +1,4 @@
-class Test{  
+class Example{  
     //defining fields  
     int id;//field or data member or instance variable  
     String name;  
